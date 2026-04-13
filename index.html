@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自社株管理処分信託　ツール</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #f5f5f0; color: #1a1a1a; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
+.container { max-width: 560px; width: 100%; padding: 2rem 1rem; }
+.title { font-size: 13px; color: #888; margin-bottom: 8px; }
+h1 { font-size: 22px; font-weight: 500; margin-bottom: 6px; }
+.subtitle { font-size: 14px; color: #666; margin-bottom: 2.5rem; line-height: 1.6; }
+.cards { display: flex; flex-direction: column; gap: 16px; }
+.card { background: #fff; border: 0.5px solid #ddd; border-radius: 12px; padding: 1.5rem; text-decoration: none; color: inherit; display: block; transition: border-color 0.15s, box-shadow 0.15s; }
+.card:hover { border-color: #1a1a1a; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+.card-num { font-size: 11px; color: #888; margin-bottom: 6px; font-weight: 500; }
+.card-title { font-size: 17px; font-weight: 500; margin-bottom: 6px; }
+.card-desc { font-size: 13px; color: #666; line-height: 1.6; }
+.card-arrow { font-size: 18px; color: #aaa; float: right; margin-top: -24px; }
+.footer { margin-top: 2.5rem; font-size: 12px; color: #aaa; text-align: center; line-height: 1.8; }
+</style>
+</head>
+<body>
+<div class="container">
+  <div class="title">司法書士法人・行政書士法人　名南経営</div>
+  <h1>自社株管理処分信託</h1>
+  <p class="subtitle">設計診断ヒアリングと契約書作成の2つのツールです。<br>面談の流れに沿ってご使用ください。</p>
+
+  <div class="cards">
+    <a href="hearing.html" class="card">
+      <div class="card-num">STEP 1</div>
+      <div class="card-title">設計診断ヒアリング</div>
+      <div class="card-desc">18の質問から最適な信託設計のタイプ（Guardian・Bridge・Exit・Balancer・Emergency）を診断します。面談中に担当者と一緒にお答えください。</div>
+      <div class="card-arrow">→</div>
+    </a>
+
+    <a href="wizard.html" class="card">
+      <div class="card-num">STEP 2</div>
+      <div class="card-title">契約書作成ウィザード</div>
+      <div class="card-desc">設計内容（受益者型・指図権・善管注意義務等）を選択し、当事者情報を入力するとJSONが生成されます。そのJSONをClaudeに渡すと契約書（Word形式）が出力されます。</div>
+      <div class="card-arrow">→</div>
+    </a>
+  </div>
+
+  <div class="footer">
+    本ツールは司法書士業務の補助を目的としたものです。<br>
+    法的アドバイスの提供を目的とするものではありません。<br>
+    © 名南経営
+  </div>
+</div>
+</body>
+</html>
