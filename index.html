@@ -3,360 +3,979 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>自社株信託　設計診断ヒアリング</title>
+<title>自社株管理処分信託 契約書作成ウィザード</title>
 <style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif; background: #f5f5f0; color: #1a1a1a; }
-.app { max-width: 680px; margin: 0 auto; padding: 1.5rem 1rem; }
-.header { margin-bottom: 1.5rem; }
-.header h1 { font-size: 16px; font-weight: 500; }
-.progress-bar { height: 4px; background: #e0e0e0; border-radius: 2px; margin-bottom: 1.5rem; }
-.progress-fill { height: 4px; background: #1a1a1a; border-radius: 2px; transition: width 0.3s; }
-.progress-label { font-size: 12px; color: #666; margin-bottom: 6px; }
-.question-card { background: #fff; border: 0.5px solid #ddd; border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
-.question-num { font-size: 12px; color: #888; margin-bottom: 8px; }
-.question-text { font-size: 16px; font-weight: 500; line-height: 1.6; }
-.note { font-size: 13px; color: #888; margin-top: 8px; font-style: italic; }
-.skip-note { font-size: 13px; color: #1a6fa8; margin-top: 8px; background: #e8f4fc; padding: 8px 12px; border-radius: 8px; }
-.options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 1.5rem; }
-.option-btn { background: #fff; border: 0.5px solid #ddd; border-radius: 8px; padding: 14px 16px; text-align: left; cursor: pointer; font-size: 14px; color: #1a1a1a; line-height: 1.5; transition: border-color 0.15s, background 0.15s; display: flex; align-items: flex-start; gap: 10px; font-family: inherit; }
-.option-btn:hover { border-color: #999; background: #f9f9f7; }
-.option-btn.selected { border-color: #1a1a1a; border-width: 1.5px; background: #f5f5f0; }
-.option-label { font-weight: 500; font-size: 13px; color: #888; flex-shrink: 0; min-width: 20px; }
-.nav-row { display: flex; gap: 10px; justify-content: flex-end; }
-.nav-btn { padding: 10px 20px; border-radius: 8px; font-size: 14px; cursor: pointer; border: 0.5px solid #ccc; background: transparent; color: #1a1a1a; font-family: inherit; }
-.nav-btn:hover { background: #f5f5f0; }
-.nav-btn.primary { background: #1a1a1a; color: #fff; border-color: #1a1a1a; }
-.nav-btn.primary:hover { opacity: 0.85; }
-.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
-.type-card { background: #fff; border: 0.5px solid #ddd; border-radius: 12px; padding: 1.25rem; margin-bottom: 1rem; }
-.type-badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 3px 10px; border-radius: 8px; margin-bottom: 8px; }
-.primary-badge { background: #fff; border: 1.5px solid #1a1a1a; color: #1a1a1a; }
-.secondary-badge { background: #f5f5f0; border: 0.5px solid #ccc; color: #666; }
-.type-name { font-size: 18px; font-weight: 500; margin-bottom: 4px; }
-.type-desc { font-size: 13px; color: #666; line-height: 1.6; }
-.score-grid { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 8px; margin: 1rem 0; }
-.score-item { background: #f5f5f0; border-radius: 8px; padding: 10px 8px; text-align: center; }
-.score-item .sname { font-size: 11px; color: #888; margin-bottom: 4px; }
-.score-item .sval { font-size: 18px; font-weight: 500; }
-.design-card { background: #f5f5f0; border-radius: 8px; padding: 1rem; margin-bottom: 10px; }
-.design-label { font-size: 11px; color: #888; margin-bottom: 4px; font-weight: 500; }
-.design-val { font-size: 13px; line-height: 1.5; }
-.risk-box { border: 0.5px solid #ddd; border-radius: 8px; padding: 10px 14px; margin-top: 10px; }
-.risk-label { font-size: 11px; color: #888; margin-bottom: 4px; }
-.risk-val { font-size: 13px; line-height: 1.5; }
-.restart-btn { width: 100%; padding: 12px; border-radius: 8px; border: 0.5px solid #ccc; background: transparent; color: #1a1a1a; font-size: 14px; cursor: pointer; margin-top: 1rem; font-family: inherit; }
-.restart-btn:hover { background: #f5f5f0; }
-.intro-section { text-align: center; padding: 2rem 0; }
-.intro-section h2 { font-size: 20px; font-weight: 500; margin-bottom: 8px; }
-.intro-section p { font-size: 14px; color: #666; line-height: 1.7; margin-bottom: 1.5rem; }
-.start-btn { padding: 14px 32px; background: #1a1a1a; color: #fff; border: none; border-radius: 8px; font-size: 15px; cursor: pointer; font-family: inherit; }
-#resultSection { display: none; }
-#quizSection { display: none; }
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+  :root {
+    --ink: #1a1a2e;
+    --ink-light: #4a4a6a;
+    --parchment: #faf8f3;
+    --parchment-dark: #f0ece0;
+    --gold: #b8860b;
+    --gold-light: #d4a017;
+    --gold-pale: #f5ecd0;
+    --red: #8b1a1a;
+    --green: #1a5c2a;
+    --border: #c8bfa0;
+    --shadow: rgba(26,26,46,0.12);
+    --step-active: #1a1a2e;
+    --step-done: #1a5c2a;
+    --step-todo: #c8bfa0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--parchment);
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(184,134,11,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 90%, rgba(26,26,46,0.04) 0%, transparent 60%);
+  }
+
+  /* Header */
+  header {
+    background: var(--ink);
+    color: #f5ecd0;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  header .logo {
+    width: 36px; height: 36px;
+    border: 2px solid var(--gold);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+  }
+  header .subtitle {
+    font-size: 11px;
+    color: #a0998c;
+    margin-top: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    overflow-x: auto;
+  }
+  .progress-steps {
+    display: flex;
+    min-width: 600px;
+    padding: 16px 0;
+    gap: 0;
+  }
+  .step-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    cursor: default;
+  }
+  .step-item::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: calc(50% + 16px);
+    right: calc(-50% + 16px);
+    height: 2px;
+    background: var(--step-todo);
+  }
+  .step-item:last-child::before { display: none; }
+  .step-item.done::before { background: var(--step-done); }
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--step-todo);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 1;
+    transition: background 0.3s;
+  }
+  .step-item.active .step-num { background: var(--step-active); }
+  .step-item.done .step-num { background: var(--step-done); font-size: 14px; }
+  .step-label {
+    font-size: 10px;
+    color: var(--ink-light);
+    text-align: center;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .step-item.active .step-label { color: var(--ink); font-weight: 700; }
+
+  /* Main */
+  main {
+    max-width: 780px;
+    margin: 32px auto;
+    padding: 0 20px 80px;
+  }
+
+  /* Panels */
+  .panel {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .panel.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: 0.03em;
+  }
+  .panel-desc {
+    font-size: 13px;
+    color: var(--ink-light);
+    margin-bottom: 24px;
+    line-height: 1.7;
+    border-left: 3px solid var(--gold);
+    padding-left: 12px;
+  }
+
+  /* Choice cards */
+  .choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .choice-grid.single { grid-template-columns: 1fr; }
+  .choice-card {
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    position: relative;
+  }
+  .choice-card:hover {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+  }
+  .choice-card.selected {
+    border-color: var(--ink);
+    background: var(--gold-pale);
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .choice-card .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+    background: var(--ink);
+    color: white;
+  }
+  .choice-card.selected .badge { background: var(--gold); }
+  .choice-card h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .choice-card p {
+    font-size: 12px;
+    color: var(--ink-light);
+    line-height: 1.7;
+  }
+  .choice-card .risk {
+    margin-top: 8px;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    background: #fff3cd;
+    color: #856404;
+    border-left: 3px solid #ffc107;
+  }
+  .choice-card .check {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: white;
+    display: none;
+    align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .choice-card.selected .check { display: flex; }
+
+  /* Form inputs */
+  .form-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .form-section h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--parchment-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .form-section h3 .tag {
+    font-size: 10px;
+    background: var(--gold-pale);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-weight: 700;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    align-items: start;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  label {
+    font-size: 13px;
+    color: var(--ink-light);
+    padding-top: 8px;
+    font-weight: 500;
+  }
+  input[type="text"] {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    background: var(--parchment);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus {
+    border-color: var(--gold);
+    background: white;
+  }
+  input[type="text"]::placeholder { color: #b0a890; font-size: 12px; }
+
+  /* Toggle */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--parchment);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .toggle {
+    width: 44px; height: 24px;
+    background: var(--border);
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .toggle.on { background: var(--green); }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    border-radius: 9px;
+    background: white;
+    top: 3px; left: 3px;
+    transition: left 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle.on::after { left: 23px; }
+  .toggle-label { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .toggle-desc { font-size: 11px; color: var(--ink-light); margin-top: 2px; }
+
+  /* Select */
+  select {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    background: var(--parchment);
+    outline: none;
+    cursor: pointer;
+  }
+  select:focus { border-color: var(--gold); background: white; }
+
+  /* Buttons */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    justify-content: flex-end;
+  }
+  .btn {
+    padding: 12px 28px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.04em;
+    transition: all 0.15s;
+  }
+  .btn-secondary {
+    background: white;
+    border: 2px solid var(--border);
+    color: var(--ink-light);
+  }
+  .btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
+  .btn-primary {
+    background: var(--ink);
+    color: white;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .btn-primary:hover { background: #2a2a4e; transform: translateY(-1px); }
+  .btn-gold {
+    background: var(--gold);
+    color: white;
+    box-shadow: 0 2px 8px rgba(184,134,11,0.3);
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* Summary */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .summary-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .summary-card .key {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .summary-card .val {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  /* JSON output */
+  .json-box {
+    background: var(--ink);
+    color: #a8d8a8;
+    border-radius: 6px;
+    padding: 16px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    white-space: pre;
+    overflow-x: auto;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .instruction-box {
+    background: #e8f4e8;
+    border: 1px solid #4caf50;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+  }
+  .instruction-box h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .instruction-box ol {
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 2;
+    padding-left: 20px;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--gold);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.15s;
+    margin-bottom: 12px;
+  }
+  .copy-btn:hover { background: var(--gold-light); }
+  .copy-btn.copied { background: var(--green); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .choice-grid { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    header { padding: 14px 20px; }
+    main { padding: 0 12px 60px; }
+  }
+
+  .warning {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 5px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #856404;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .hidden { display: none !important; }
 </style>
 </head>
 <body>
-<div class="app">
 
-<div id="introSection" class="intro-section">
-  <h2>自社株信託　設計診断ヒアリング</h2>
-  <p>18の質問にお答えいただくことで、<br>最適な信託設計の方向性を診断します。<br>所要時間：約10〜15分</p>
-  <button class="start-btn" onclick="startQuiz()">はじめる</button>
-</div>
-
-<div id="quizSection">
-  <div class="header"><h1>自社株信託　設計診断</h1></div>
-  <div class="progress-label" id="progressLabel">質問 1 / 18</div>
-  <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:5.5%"></div></div>
-  <div class="question-card">
-    <div class="question-num" id="qNum">Q1</div>
-    <div class="question-text" id="qText"></div>
-    <div id="qNote" style="display:none;"></div>
+<header>
+  <div class="logo">信</div>
+  <div>
+    <h1>自社株管理処分信託　契約書作成ウィザード</h1>
+    <div class="subtitle">株式管理処分信託契約書 Ver.2 ベース ／ （株）リーガルマネジメント名南</div>
   </div>
-  <div class="options" id="optionsContainer"></div>
-  <div class="nav-row">
-    <button class="nav-btn" id="prevBtn" onclick="prevQ()" disabled>戻る</button>
-    <button class="nav-btn primary" id="nextBtn" onclick="nextQ()" disabled>次へ</button>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-steps" id="progressSteps">
+    <!-- JS で生成 -->
   </div>
 </div>
 
-<div id="resultSection">
-  <div class="header">
-    <h1>診断結果</h1>
-    <p id="resultDate" style="font-size:13px;color:#888;margin-top:4px;"></p>
+<main>
+
+  <!-- Step 0: 基本情報 -->
+  <div class="panel active" id="panel-0">
+    <div class="panel-title">基本情報の入力</div>
+    <div class="panel-desc">対象会社・信託財産・管轄裁判所を入力してください。</div>
+    <div class="form-section">
+      <h3>対象会社・信託財産</h3>
+      <div class="form-row">
+        <label>対象会社名</label>
+        <input type="text" id="companyName" placeholder="株式会社〇〇商事">
+      </div>
+      <div class="form-row">
+        <label>信託株式数</label>
+        <input type="text" id="shareCount" placeholder="1,000（単位：株）">
+      </div>
+      <div class="form-row">
+        <label>信託金銭額</label>
+        <input type="text" id="trustMoney" placeholder="500,000（単位：円）">
+      </div>
+      <div class="form-row">
+        <label>管轄裁判所</label>
+        <input type="text" id="courtName" placeholder="名古屋（地方裁判所）">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
   </div>
-  <div class="type-card">
-    <div class="type-badge primary-badge">主タイプ</div>
-    <div class="type-name" id="primaryName"></div>
-    <div class="type-desc" id="primaryDesc"></div>
+
+  <!-- Step 1: 委託者 -->
+  <div class="panel" id="panel-1">
+    <div class="panel-title">委託者の情報</div>
+    <div class="panel-desc">株式を信託する方（通常：現オーナー経営者）の情報を入力してください。</div>
+    <div class="form-section">
+      <h3>委託者 <span class="tag">第4条</span></h3>
+      <div class="form-row"><label>住所</label><input type="text" id="trustor_address" placeholder="愛知県名古屋市…"></div>
+      <div class="form-row"><label>氏名</label><input type="text" id="trustor_name" placeholder="山田　太郎"></div>
+      <div class="form-row"><label>生年月日</label><input type="text" id="trustor_dob" placeholder="昭和40年5月15日"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
   </div>
-  <div class="type-card">
-    <div class="type-badge secondary-badge">副タイプ</div>
-    <div class="type-name" id="secondaryName"></div>
-    <div class="type-desc" id="secondaryDesc"></div>
+
+  <!-- Step 2: 受託者 -->
+  <div class="panel" id="panel-2">
+    <div class="panel-title">受託者・後継受託者の情報</div>
+    <div class="panel-desc">株式を管理する方（通常：後継者）とその予備を入力してください。</div>
+    <div class="form-section">
+      <h3>受託者 <span class="tag">第4条</span></h3>
+      <div class="form-row"><label>住所</label><input type="text" id="trustee_address" placeholder="愛知県名古屋市…"></div>
+      <div class="form-row"><label>氏名</label><input type="text" id="trustee_name" placeholder="山田　一郎"></div>
+      <div class="form-row"><label>生年月日</label><input type="text" id="trustee_dob" placeholder="昭和65年3月20日"></div>
+    </div>
+    <div class="form-section">
+      <h3>後継受託者 <span class="tag">第8条</span></h3>
+      <div class="form-row"><label>住所</label><input type="text" id="successorTrustee_address" placeholder="愛知県名古屋市…"></div>
+      <div class="form-row"><label>氏名</label><input type="text" id="successorTrustee_name" placeholder="山田　花子"></div>
+      <div class="form-row"><label>生年月日</label><input type="text" id="successorTrustee_dob" placeholder="昭和67年7月10日"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
   </div>
-  <div class="score-grid" id="scoreGrid"></div>
-  <div class="design-card">
-    <div class="design-label">推奨：信託株式割合の目安</div>
-    <div class="design-val" id="designShare"></div>
+
+  <!-- Step 3: 受益者 -->
+  <div class="panel" id="panel-3">
+    <div class="panel-title">受益者の選択</div>
+    <div class="panel-desc">信託の利益を受け取る方の設計を選んでください。第11条の選択肢です。</div>
+
+    <div class="choice-grid">
+      <div class="choice-card" id="choice-benA" onclick="selectChoice('beneficiaryType','A','choice-benA','choice-benB')">
+        <div class="badge">選択肢A</div>
+        <div class="check">✓</div>
+        <h3>シンプル自益型</h3>
+        <p>委託者（現オーナー）が当初受益者。当初受益者の死亡時点で信託終了・残余財産帰属とするシンプルな設計。</p>
+        <div class="risk">受益者連続なし。後継者への株式承継は別途設計が必要。</div>
+      </div>
+      <div class="choice-card" id="choice-benB" onclick="selectChoice('beneficiaryType','B','choice-benB','choice-benA')">
+        <div class="badge">選択肢B</div>
+        <div class="check">✓</div>
+        <h3>受益者連続型</h3>
+        <p>当初受益者→第２次受益者（配偶者等）→第３次受益者（後継者等）と連続して受益権が移転する設計。信託法第91条対応。</p>
+        <div class="risk">30年ルール（信託法91条）への対応を別途検討すること。</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>当初受益者 <span class="tag">第11条</span></h3>
+      <div class="form-row"><label>住所</label><input type="text" id="ben1_address" placeholder="愛知県名古屋市…"></div>
+      <div class="form-row"><label>氏名</label><input type="text" id="ben1_name" placeholder="山田　太郎"></div>
+      <div class="form-row"><label>生年月日</label><input type="text" id="ben1_dob" placeholder="昭和40年5月15日"></div>
+    </div>
+
+    <div id="ben23section">
+      <div class="form-section">
+        <h3>第２次受益者 <span class="tag">受益者連続型のみ</span></h3>
+        <div class="form-row"><label>住所</label><input type="text" id="ben2_address" placeholder="愛知県名古屋市…"></div>
+        <div class="form-row"><label>氏名</label><input type="text" id="ben2_name" placeholder="山田　幸子（配偶者）"></div>
+        <div class="form-row"><label>生年月日</label><input type="text" id="ben2_dob" placeholder="昭和42年8月25日"></div>
+      </div>
+      <div class="form-section">
+        <h3>第３次受益者 <span class="tag">受益者連続型のみ</span></h3>
+        <div class="form-row"><label>住所</label><input type="text" id="ben3_address" placeholder="愛知県名古屋市…"></div>
+        <div class="form-row"><label>氏名</label><input type="text" id="ben3_name" placeholder="山田　一郎（後継者）"></div>
+        <div class="form-row"><label>生年月日</label><input type="text" id="ben3_dob" placeholder="昭和65年3月20日"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
   </div>
-  <div class="design-card">
-    <div class="design-label">推奨：指図権設計</div>
-    <div class="design-val" id="designDirection"></div>
+
+  <!-- Step 4: 指図権 -->
+  <div class="panel" id="panel-4">
+    <div class="panel-title">指図権の設計</div>
+    <div class="panel-desc">最重要設計項目です。議決権行使・株式処分の権限をどのように設計するか選んでください。第14条の選択肢です。</div>
+
+    <div class="choice-grid">
+      <div class="choice-card" id="choice-dirA" onclick="selectChoice('directionType','A','choice-dirA','choice-dirB')">
+        <div class="badge">選択肢A　推奨</div>
+        <div class="check">✓</div>
+        <h3>指図型</h3>
+        <p>元気なうちは受益者（現経営者）が指図権を持つ。認知症等のトリガー発生後に受託者へ権限が移行する標準型。</p>
+        <div class="risk">トリガー条件の設計が重要。不応答トリガーの期間を慎重に検討すること。</div>
+      </div>
+      <div class="choice-card" id="choice-dirB" onclick="selectChoice('directionType','B','choice-dirB','choice-dirA')">
+        <div class="badge">選択肢B</div>
+        <div class="check">✓</div>
+        <h3>自律型</h3>
+        <p>受益者の指図なしに受託者が最初から自律的に権限を行使する設計。委託者が受託者を全面的に信頼する場合に選択。</p>
+        <div class="risk">名義信託との区別に注意。委託者・受益者への十分な説明と記録が必要。</div>
+      </div>
+    </div>
+
+    <div class="form-section" id="triggerSection">
+      <h3>トリガー条件（指図型の場合）</h3>
+      <div class="form-row">
+        <label>不応答期間</label>
+        <select id="triggerDays">
+          <option value="２週間">２週間（推奨：不応答リスク低減）</option>
+          <option value="１か月">１か月（ひな形デフォルト）</option>
+          <option value="２か月">２か月</option>
+        </select>
+      </div>
+      <p style="font-size:11px;color:var(--ink-light);margin-top:8px;line-height:1.7;">
+        受託者から受益者への指図要請通知（内容証明郵便）後、この期間内に受益者が指図しない場合に受託者の自律判断へ切り替わります。期間が長いほど経営判断の遅延リスクが高まります。
+      </p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
   </div>
-  <div class="design-card">
-    <div class="design-label">副タイプ補助設計</div>
-    <div class="design-val" id="designAddon"></div>
+
+  <!-- Step 5: 善管注意義務・残余財産 -->
+  <div class="panel" id="panel-5">
+    <div class="panel-title">善管注意義務・残余財産の設計</div>
+    <div class="panel-desc">第15条（善管注意義務）と第24条（残余財産帰属）を設計してください。</div>
+
+    <!-- 善管注意義務 -->
+    <div class="form-section">
+      <h3>善管注意義務の軽減 <span class="tag">第15条</span></h3>
+      <div class="toggle-row" onclick="toggleOpt('reduceDuty')">
+        <div class="toggle" id="toggle-reduceDuty"></div>
+        <div>
+          <div class="toggle-label">軽減条項を追加する（自己のためにするのと同一の注意）</div>
+          <div class="toggle-desc">信託法29条2項但書。受益者が承諾した場合のみ有効。紛争時の判断基準が曖昧になるリスクあり。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 残余財産 -->
+    <div class="form-section">
+      <h3>残余財産の帰属先 <span class="tag">第24条</span></h3>
+      <div class="choice-grid" style="margin-bottom:16px;">
+        <div class="choice-card" id="choice-resA" onclick="selectChoice('residualType','A','choice-resA','choice-resB');toggleResidualForm()">
+          <div class="badge">選択肢A　課税リスク低</div>
+          <div class="check">✓</div>
+          <h3>信託終了時の受益者に帰属</h3>
+          <p>最もシンプル。自益信託の場合、信託設定・終了時ともに実質的な課税が生じにくい。</p>
+        </div>
+        <div class="choice-card" id="choice-resB" onclick="selectChoice('residualType','B','choice-resB','choice-resA');toggleResidualForm()">
+          <div class="badge">選択肢B</div>
+          <div class="check">✓</div>
+          <h3>特定の帰属権利者を指定</h3>
+          <p>後継者等を名指しで指定。信託終了時にみなし贈与課税（相続税法9条の2第4項）が生じうる。税理士連携必須。</p>
+        </div>
+      </div>
+
+      <div id="residualForm" class="hidden">
+        <div class="form-section" style="margin-bottom:12px;">
+          <h3>帰属権利者 <span class="tag">第24条B</span></h3>
+          <div class="form-row"><label>住所</label><input type="text" id="res_address" placeholder="愛知県名古屋市…"></div>
+          <div class="form-row"><label>氏名</label><input type="text" id="res_name" placeholder="山田　一郎（後継者）"></div>
+          <div class="form-row"><label>生年月日</label><input type="text" id="res_dob" placeholder="昭和65年3月20日"></div>
+        </div>
+        <div class="form-section">
+          <h3>予備的帰属権利者 <span class="tag">第24条B</span></h3>
+          <div class="form-row"><label>住所</label><input type="text" id="resAlt_address" placeholder="愛知県名古屋市…"></div>
+          <div class="form-row"><label>氏名</label><input type="text" id="resAlt_name" placeholder="山田　花子"></div>
+          <div class="form-row"><label>生年月日</label><input type="text" id="resAlt_dob" placeholder="昭和67年7月10日"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
   </div>
-  <div class="risk-box">
-    <div class="risk-label">留意リスク</div>
-    <div class="risk-val" id="designRisk"></div>
+
+  <!-- Step 6: 信託終了事由・清算受託者 -->
+  <div class="panel" id="panel-6">
+    <div class="panel-title">信託終了事由・清算受託者</div>
+    <div class="panel-desc">第22条（終了事由）の第７号と予備的清算受託者を設定してください。</div>
+
+    <div class="form-section">
+      <h3>終了事由（７号）の設計 <span class="tag">第22条</span></h3>
+      <div class="choice-grid">
+        <div class="choice-card" id="choice-terDeath" onclick="selectChoice('terminationType','death','choice-terDeath','choice-terInherit')">
+          <div class="badge">シンプル型</div>
+          <div class="check">✓</div>
+          <h3>当初受益者の死亡時に終了</h3>
+          <p>シンプルで明確。死亡と同時に信託終了・残余財産帰属手続きへ。</p>
+        </div>
+        <div class="choice-card" id="choice-terInherit" onclick="selectChoice('terminationType','inheritance','choice-terInherit','choice-terDeath')">
+          <div class="badge">遺産分割連動型</div>
+          <div class="check">✓</div>
+          <h3>死亡後・遺産分割成立時に終了</h3>
+          <p>遺産分割未了のまま終了すると残余財産帰属の実行が困難になりうる場合に選択。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>予備的清算受託者 <span class="tag">第23条</span></h3>
+      <p style="font-size:12px;color:var(--ink-light);margin-bottom:14px;">受託者が欠缺して終了した場合の清算受託者。後継受託者と同一人でも可。</p>
+      <div class="form-row"><label>住所</label><input type="text" id="clearance_address" placeholder="愛知県名古屋市…"></div>
+      <div class="form-row"><label>氏名</label><input type="text" id="clearance_name" placeholder="山田　花子"></div>
+      <div class="form-row"><label>生年月日</label><input type="text" id="clearance_dob" placeholder="昭和67年7月10日"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
   </div>
-  <button class="restart-btn" onclick="restart()">最初からやり直す</button>
-</div>
-</div>
+
+  <!-- Step 7: 確認・出力 -->
+  <div class="panel" id="panel-7">
+    <div class="panel-title">入力内容の確認と出力</div>
+    <div class="panel-desc">設計内容を確認してください。JSONをコピーして、Claudeに「このJSONで契約書を生成してください」と依頼すると Word(.docx) が生成されます。</div>
+
+    <div class="summary-grid" id="summaryGrid"></div>
+
+    <div class="instruction-box">
+      <h4>📋 docxファイルの取得方法</h4>
+      <ol>
+        <li>下の「JSONをコピー」ボタンをクリック</li>
+        <li>Claudeのチャット画面を開く</li>
+        <li>「このJSONで自社株信託契約書を生成してください」と入力し、JSONをペーストして送信</li>
+        <li>Word（.docx）ファイルがダウンロードできます</li>
+      </ol>
+    </div>
+
+    <button class="copy-btn" id="copyBtn" onclick="copyJSON()">
+      📋 JSONをコピー
+    </button>
+
+    <div class="json-box" id="jsonOutput"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-gold" onclick="copyJSON()">📋 JSONをコピーして依頼する</button>
+    </div>
+  </div>
+
+</main>
 
 <script>
-const QUESTIONS = [
-  { id:'Q1', text:'経営権の引継ぎについて、後継者はどの程度決まっていますか？',
-    options:[
-      {label:'A',text:'人物・時期ともに決まっている',scores:{Guardian:2}},
-      {label:'B',text:'人物は決まっているが、時期はまだ',scores:{Guardian:1}},
-      {label:'C',text:'人物のイメージはあるが、確定していない',scores:{}},
-      {label:'D',text:'まだ白紙に近い',scores:{}}
-    ]},
-  { id:'Q2', text:'現在は問題ないとして、将来株主に相続が起きた場合、その家族と経営の話し合いをすることについてどう感じますか？',
-    options:[
-      {label:'A',text:'絶対に避けたい、今から手を打ちたい',scores:{Guardian:2}},
-      {label:'B',text:'できれば避けたいが、まだ切迫感はない',scores:{Guardian:1}},
-      {label:'C',text:'ある程度は仕方ないと思っている',scores:{}},
-      {label:'D',text:'あまり気にしていない',scores:{}}
-    ]},
-  { id:'Q3', text:'株式の買取や贈与による承継を検討したことはありますか？',
-    note:'※この質問はスコアには反映されません。承継への動機を確認する質問です。',
-    noteClass:'note',
-    options:[
-      {label:'A',text:'検討したが、費用・税負担等の問題で断念した',scores:{}},
-      {label:'B',text:'検討中だが、まだ決断できていない',scores:{}},
-      {label:'C',text:'名前は知っているが、具体的には考えていない',scores:{}},
-      {label:'D',text:'考えたことがない',scores:{}}
-    ]},
-  { id:'Q4', text:'議決権が分散して意思統一が図りづらくなることへの支障を感じますか？',
-    options:[
-      {label:'A',text:'強く感じる、今すぐ対処したい',scores:{Guardian:2}},
-      {label:'B',text:'感じているが、まだ余裕はある',scores:{Guardian:1}},
-      {label:'C',text:'将来はそうなるかもしれないと思う程度',scores:{}},
-      {label:'D',text:'あまり感じていない',scores:{}}
-    ]},
-  { id:'Q5', text:'買取や贈与なしに議決権を集め、全体最適な経営ができるとしたら、いつ頃実現したいですか？',
-    options:[
-      {label:'A',text:'できるだけ早く、1〜2年以内に',scores:{Guardian:2}},
-      {label:'B',text:'3〜5年以内に',scores:{Guardian:1}},
-      {label:'C',text:'10年程度の猶予があってよい',scores:{}},
-      {label:'D',text:'時期はまだ考えていない',scores:{}}
-    ]},
-  { id:'Q6', text:'議決権と財産権を分けて承継させ、後継者の意思決定を守りながら家族にも企業価値向上の恩恵を届けるスキームがあるとしたら、どう思いますか？',
-    options:[
-      {label:'A',text:'ぜひそうしたい、それが理想だ',scores:{Guardian:2}},
-      {label:'B',text:'興味はあるが、家族の納得が得られるか不安',scores:{Guardian:1}},
-      {label:'C',text:'財産は平等に分けたい、支配権の集中には抵抗がある',scores:{Balancer:1}},
-      {label:'D',text:'家族全員で経営に関わってほしい',scores:{Balancer:1}}
-    ]},
-  { id:'Q7', text:'現在の株主構成と家族構成を教えてください。後継者以外に株主や相続人はいますか？',
-    options:[
-      {label:'A',text:'後継者以外に複数の株主・相続人がいる',scores:{Balancer:2}},
-      {label:'B',text:'いるが、持株比率は小さい',scores:{Balancer:1}},
-      {label:'C',text:'ほぼ後継者に集中している',scores:{}},
-      {label:'D',text:'まだ整理できていない',scores:{}}
-    ]},
-  { id:'Q8', text:'踏み込んだことをお聞きしますが、家族間で経営や相続について、意見の違いや話しにくい雰囲気はありますか？',
-    options:[
-      {label:'A',text:'ある、すでに緊張感がある',scores:{Balancer:2}},
-      {label:'B',text:'表立った対立はないが、話し合いを避けている',scores:{Balancer:1}},
-      {label:'C',text:'概ね良好だが、将来は不安',scores:{}},
-      {label:'D',text:'特に問題はない',scores:{}}
-    ]},
-  { id:'Q9', text:'承継を考えるとき、率直に言って一番手放しにくいのはどれですか？',
-    options:[
-      {label:'A',text:'経営の意思決定権（議決権・人事権）',scores:{Bridge:2}},
-      {label:'B',text:'社内外での立場・影響力',scores:{Bridge:1}},
-      {label:'C',text:'役員報酬や配当などの生活基盤',scores:{}},
-      {label:'D',text:'特にこだわりはない',scores:{}}
-    ]},
-  { id:'Q10', text:'経営者の急病や認知症により会社が混乱した事例を、身近で見聞きしたことはありますか？',
-    options:[
-      {label:'A',text:'直接経験した・近しい人が経験した',scores:{Emergency:2}},
-      {label:'B',text:'知人や業界で聞いたことがある',scores:{Emergency:1}},
-      {label:'C',text:'ニュースや書籍で知っている程度',scores:{}},
-      {label:'D',text:'特に聞いたことがない',scores:{}}
-    ]},
-  { id:'Q11', text:'それを見聞きしてどう感じましたか？自分も何か手を打ちたいと思いましたか？',
-    skipIf:{qIndex:9,answerIn:[2,3]},
-    skipNote:'前の質問で「ない」とお答えのため、この質問はスキップされました。',
-    noteClass:'skip-note',
-    options:[
-      {label:'A',text:'強く危機感を感じた、すぐに動きたい',scores:{Emergency:2}},
-      {label:'B',text:'他人事ではないと思ったが、まだ動けていない',scores:{Emergency:1}},
-      {label:'C',text:'気になったが、自分は大丈夫だと思った',scores:{}},
-      {label:'D',text:'特に何も感じなかった',scores:{}}
-    ]},
-  { id:'Q12', text:'後継者に身につけてほしいものとして、次のどれが最も近いですか？またそれが備われば承継できますか？',
-    options:[
-      {label:'A',text:'見返りを求めない、人のための行動力',scores:{Bridge:2}},
-      {label:'B',text:'多様な意見を受け止め調整するバランス感覚',scores:{Bridge:1}},
-      {label:'C',text:'人を動かす説得力・求心力',scores:{Bridge:1}},
-      {label:'D',text:'まだ後継者自身が定まっていない',scores:{}}
-    ]},
-  { id:'Q13', text:'VUCAの時代に企業価値を守り続けることを、社内や身内の後継者に求めるのは酷かもしれないと感じたことはありますか？',
-    options:[
-      {label:'A',text:'ある、外部への売却や譲渡も選択肢として考えている',scores:{Exit:2}},
-      {label:'B',text:'感じたことはあるが、まだ身内承継を諦めていない',scores:{Exit:1}},
-      {label:'C',text:'厳しい時代だとは思うが、後継者を信じたい',scores:{}},
-      {label:'D',text:'そう感じたことはない',scores:{}}
-    ]},
-  { id:'Q14', text:'他社の買収や対等統合を自ら仕掛けることを考えたことはありますか？',
-    options:[
-      {label:'A',text:'ある、積極的に考えている',scores:{Exit:1}},
-      {label:'B',text:'興味はあるが、現実的には難しいと思っている',scores:{Exit:1}},
-      {label:'C',text:'とても無理、自社を守ることで精一杯',scores:{}},
-      {label:'D',text:'考えたことがない',scores:{}}
-    ]},
-  { id:'Q15', text:'自社の企業価値（株式価値）をおおよそ把握していますか？',
-    options:[
-      {label:'A',text:'把握している、専門家に試算してもらったことがある',scores:{Exit:2}},
-      {label:'B',text:'なんとなく想像はできるが、正確には知らない',scores:{Exit:1}},
-      {label:'C',text:'考えたことはあるが、調べていない',scores:{}},
-      {label:'D',text:'把握していない・考えたことがない',scores:{}}
-    ]},
-  { id:'Q16', text:'自社株の承継で一番避けたいことは何ですか？',
-    options:[
-      {label:'A',text:'会社・家族・従業員が自分の判断ミスや不在で迷うこと',scores:{Emergency:1,Guardian:1}},
-      {label:'B',text:'買取や贈与にかかる税金・費用の負担',scores:{}},
-      {label:'C',text:'承継後に経営が不安定になること',scores:{Bridge:1}},
-      {label:'D',text:'まだ具体的に考えていない',scores:{}}
-    ]},
-  { id:'Q17', text:'万一判断能力を失った場合、成年後見制度により弁護士等が月5万円・20年で約1,440万円の報酬を受け取りながら会社経営に関与する可能性があります。これについてどう感じますか？',
-    options:[
-      {label:'A',text:'それは困る、自分で信頼できる人に託す仕組みを作りたい',scores:{Emergency:2}},
-      {label:'B',text:'問題だと思うが、具体的な対策を考えていなかった',scores:{Emergency:1}},
-      {label:'C',text:'仕方ない部分もあると思う',scores:{}},
-      {label:'D',text:'初めて知った、まだ判断できない',scores:{}}
-    ]},
-  { id:'Q18', text:'今日のお話を踏まえて、自社株信託の設計を具体的に進めることへの気持ちはどうですか？',
-    options:[
-      {label:'A',text:'ぜひ進めたい、早く動きたい',scores:{Guardian:1,Emergency:1}},
-      {label:'B',text:'前向きだが、もう少し検討したい',scores:{Bridge:1}},
-      {label:'C',text:'興味はあるが、家族や税理士と相談してから',scores:{Balancer:1}},
-      {label:'D',text:'まだ決断できない',scores:{}}
-    ]}
-];
+// ===== State =====
+let currentStep = 0;
+const TOTAL_STEPS = 8;
+const STEP_LABELS = ['基本情報', '委託者', '受託者', '受益者', '指図権', '義務・残余', '終了・清算', '確認・出力'];
 
-const TYPES = {
-  Guardian:  {jp:'継続統治型',desc:'理念維持・統治集中・外部防御。支配権を強く守り、変更しにくい設計を好む。',share:'原則：67%以上（特別決議ライン確保）',direction:'事項別指図（重要事項は委託者集中）＋監督人承認を要所に付す',risk:'硬直化・後継者育成不足・平等思想との衝突'},
-  Bridge:    {jp:'段階承継型',desc:'段階的に権限移譲。「今は握るが、条件が整えば渡す」を設計する。',share:'目安：51〜67%（移行設計に合わせ調整）',direction:'指図者交代型（委託者→共同→後継者）＋移行トリガー明確化',risk:'共同指図で停止・判断遅延・トリガー曖昧化'},
-  Exit:      {jp:'出口柔軟型',desc:'売却も視野。売却判断と価格決定を分離し、出口を滑らかにする。',share:'状況：必要割合のみ（M&A/支配要件で最適化）',direction:'処分事項限定指図（売却判断は別設計）＋価格は受託者/算定条項へ',risk:'期待不一致・税務爆発・売却時対立'},
-  Balancer:  {jp:'家族調整型',desc:'紛争回避・平等志向。経済権と支配権を分け、家族関係を守る。',share:'支配は後継者に寄せ、経済権を分散（要調整）',direction:'共同指図／多数決指図＋監督人関与＋透明性条項',risk:'意思決定速度低下・支配弱体化'},
-  Emergency: {jp:'凍結回避型',desc:'認知症・急変で止めない。短時間で安全弁を作る。',share:'必要割合で可（ただし停止を避ける割合）',direction:'委託者指図→判断不能で自動移行（医師診断等トリガー）',risk:'将来の再設計困難・税務未成熟'}
+const state = {
+  beneficiaryType: null,
+  directionType: null,
+  reduceDuty: false,
+  residualType: null,
+  terminationType: null,
+  triggerDays: '２週間',
 };
 
-let currentQ=0, answers=new Array(18).fill(null), skipped=new Array(18).fill(false);
-
-function isSkipped(idx){
-  const q=QUESTIONS[idx];
-  if(!q.skipIf) return false;
-  const a=answers[q.skipIf.qIndex];
-  return a!==null && q.skipIf.answerIn.includes(a);
+// ===== Init =====
+function buildProgress() {
+  const wrap = document.getElementById('progressSteps');
+  wrap.innerHTML = STEP_LABELS.map((label, i) => `
+    <div class="step-item ${i < currentStep ? 'done' : i === currentStep ? 'active' : ''}" id="prog-${i}">
+      <div class="step-num">${i < currentStep ? '✓' : i + 1}</div>
+      <div class="step-label">${label}</div>
+    </div>
+  `).join('');
 }
 
-function startQuiz(){
-  document.getElementById('introSection').style.display='none';
-  document.getElementById('quizSection').style.display='block';
-  renderQuestion();
+buildProgress();
+
+// ===== Navigation =====
+function goNext() {
+  document.getElementById(`panel-${currentStep}`).classList.remove('active');
+  currentStep++;
+  document.getElementById(`panel-${currentStep}`).classList.add('active');
+  buildProgress();
+  if (currentStep === 7) buildSummary();
+  window.scrollTo(0, 0);
 }
 
-function renderQuestion(){
-  const q=QUESTIONS[currentQ];
-  document.getElementById('progressLabel').textContent=`質問 ${currentQ+1} / 18`;
-  document.getElementById('progressFill').style.width=`${((currentQ+1)/18)*100}%`;
-  document.getElementById('qNum').textContent=q.id;
-  document.getElementById('qText').textContent=q.text;
-  const noteEl=document.getElementById('qNote');
-  const skip=isSkipped(currentQ);
-  skipped[currentQ]=skip;
-  if(skip && q.skipNote){
-    noteEl.textContent=q.skipNote;
-    noteEl.className='skip-note';
-    noteEl.style.display='block';
-  } else if(q.note){
-    noteEl.textContent=q.note;
-    noteEl.className='note';
-    noteEl.style.display='block';
-  } else {
-    noteEl.style.display='none';
+function goPrev() {
+  document.getElementById(`panel-${currentStep}`).classList.remove('active');
+  currentStep--;
+  document.getElementById(`panel-${currentStep}`).classList.add('active');
+  buildProgress();
+  window.scrollTo(0, 0);
+}
+
+// ===== Choice selection =====
+function selectChoice(key, value, activeId, inactiveId) {
+  state[key] = value;
+  document.getElementById(activeId)?.classList.add('selected');
+  document.getElementById(inactiveId)?.classList.remove('selected');
+
+  // 受益者連続型の場合のみ2-3次受益者フォームを表示
+  if (key === 'beneficiaryType') {
+    document.getElementById('ben23section').style.display = value === 'B' ? 'block' : 'none';
   }
-  const container=document.getElementById('optionsContainer');
-  container.innerHTML='';
-  if(skip){
-    answers[currentQ]=-1;
-    document.getElementById('nextBtn').disabled=false;
-  } else {
-    q.options.forEach((opt,i)=>{
-      const btn=document.createElement('button');
-      btn.className='option-btn'+(answers[currentQ]===i?' selected':'');
-      btn.innerHTML=`<span class="option-label">${opt.label}</span><span>${opt.text}</span>`;
-      btn.onclick=()=>selectOption(i);
-      container.appendChild(btn);
-    });
-    document.getElementById('nextBtn').disabled=answers[currentQ]===null;
+  // 指図型の場合のみトリガー設定表示
+  if (key === 'directionType') {
+    document.getElementById('triggerSection').style.display = value === 'A' ? 'block' : 'none';
   }
-  document.getElementById('prevBtn').disabled=currentQ===0;
-  document.getElementById('nextBtn').textContent=currentQ===17?'診断結果を見る':skip?'スキップして次へ':'次へ';
 }
 
-function selectOption(idx){
-  answers[currentQ]=idx;
-  document.querySelectorAll('.option-btn').forEach((b,i)=>b.classList.toggle('selected',i===idx));
-  document.getElementById('nextBtn').disabled=false;
+// ===== Toggle =====
+function toggleOpt(key) {
+  state[key] = !state[key];
+  const el = document.getElementById(`toggle-${key}`);
+  el.classList.toggle('on', state[key]);
 }
 
-function nextQ(){
-  if(currentQ<17){currentQ++;renderQuestion();}
-  else showResult();
+// ===== Residual form =====
+function toggleResidualForm() {
+  const show = state.residualType === 'B';
+  document.getElementById('residualForm').classList.toggle('hidden', !show);
 }
 
-function prevQ(){
-  if(currentQ>0){currentQ--;if(skipped[currentQ])answers[currentQ]=-1;renderQuestion();}
+// ===== Get input value =====
+function val(id) {
+  return document.getElementById(id)?.value?.trim() || '';
 }
 
-function showResult(){
-  const scores={Guardian:0,Bridge:0,Exit:0,Balancer:0,Emergency:0};
-  QUESTIONS.forEach((q,qi)=>{
-    const a=answers[qi];
-    if(a!==null&&a!==-1) Object.keys(q.options[a].scores).forEach(t=>{scores[t]+=q.options[a].scores[t];});
+// ===== Build config JSON =====
+function buildConfig() {
+  return {
+    companyName: val('companyName') || '［対象会社名］',
+    shareCount: val('shareCount') || '［株数］',
+    trustMoney: val('trustMoney') || '［金額］',
+    courtName: val('courtName') || '［管轄地方裁判所名］',
+    trustor: {
+      address: val('trustor_address'),
+      name: val('trustor_name'),
+      dob: val('trustor_dob'),
+    },
+    trustee: {
+      address: val('trustee_address'),
+      name: val('trustee_name'),
+      dob: val('trustee_dob'),
+    },
+    successorTrustee: {
+      address: val('successorTrustee_address'),
+      name: val('successorTrustee_name'),
+      dob: val('successorTrustee_dob'),
+    },
+    clearanceTrustee: {
+      address: val('clearance_address'),
+      name: val('clearance_name'),
+      dob: val('clearance_dob'),
+    },
+    beneficiaryType: state.beneficiaryType || 'A',
+    beneficiary1: {
+      address: val('ben1_address'),
+      name: val('ben1_name'),
+      dob: val('ben1_dob'),
+    },
+    beneficiary2: state.beneficiaryType === 'B' ? {
+      address: val('ben2_address'),
+      name: val('ben2_name'),
+      dob: val('ben2_dob'),
+    } : undefined,
+    beneficiary3: state.beneficiaryType === 'B' ? {
+      address: val('ben3_address'),
+      name: val('ben3_name'),
+      dob: val('ben3_dob'),
+    } : undefined,
+    directionType: state.directionType || 'A',
+    triggerDays: document.getElementById('triggerDays')?.value || '２週間',
+    reduceDuty: state.reduceDuty,
+    terminationType: state.terminationType || 'death',
+    residualType: state.residualType || 'A',
+    residualPerson: state.residualType === 'B' ? {
+      address: val('res_address'),
+      name: val('res_name'),
+      dob: val('res_dob'),
+    } : undefined,
+    residualPersonAlt: state.residualType === 'B' ? {
+      address: val('resAlt_address'),
+      name: val('resAlt_name'),
+      dob: val('resAlt_dob'),
+    } : undefined,
+  };
+}
+
+// ===== Summary =====
+function buildSummary() {
+  const cfg = buildConfig();
+  const grid = document.getElementById('summaryGrid');
+  const items = [
+    ['対象会社', cfg.companyName],
+    ['信託株式数', cfg.shareCount + ' 株'],
+    ['委託者', cfg.trustor.name || '（未入力）'],
+    ['受託者', cfg.trustee.name || '（未入力）'],
+    ['受益者設計', cfg.beneficiaryType === 'A' ? 'A：シンプル自益型' : 'B：受益者連続型'],
+    ['指図権設計', cfg.directionType === 'A' ? 'A：指図型（推奨）' : 'B：自律型'],
+    ['善管注意義務', cfg.reduceDuty ? '軽減条項あり' : '標準（善管注意義務）'],
+    ['残余財産帰属', cfg.residualType === 'A' ? 'A：終了時受益者' : 'B：特定帰属権利者'],
+    ['終了事由（7号）', cfg.terminationType === 'death' ? '当初受益者死亡時' : '遺産分割成立時'],
+    ['管轄裁判所', cfg.courtName + ' 地方裁判所'],
+  ];
+  grid.innerHTML = items.map(([k, v]) => `
+    <div class="summary-card">
+      <div class="key">${k}</div>
+      <div class="val">${v}</div>
+    </div>
+  `).join('');
+
+  const jsonStr = JSON.stringify(cfg, null, 2);
+  document.getElementById('jsonOutput').textContent = jsonStr;
+}
+
+// ===== Copy JSON =====
+function copyJSON() {
+  const cfg = buildConfig();
+  const jsonStr = JSON.stringify(cfg, null, 2);
+  const prompt = `以下のJSONデータを使って、自社株管理処分信託契約書（Ver.2ベース）のWordファイルを生成してください。\n\n\`\`\`json\n${jsonStr}\n\`\`\``;
+  navigator.clipboard.writeText(prompt).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ コピーしました！';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 JSONをコピー';
+      btn.classList.remove('copied');
+    }, 2500);
+  }).catch(() => {
+    alert('コピーに失敗しました。JSONボックスを手動で選択してコピーしてください。');
   });
-  const sorted=Object.entries(scores).sort((a,b)=>b[1]-a[1]);
-  const primary=sorted[0][0], secondary=sorted[1][0];
-  document.getElementById('quizSection').style.display='none';
-  document.getElementById('resultSection').style.display='block';
-  const now=new Date();
-  document.getElementById('resultDate').textContent=`${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日`;
-  document.getElementById('primaryName').textContent=`${TYPES[primary].jp}（${primary}）`;
-  document.getElementById('primaryDesc').textContent=TYPES[primary].desc;
-  document.getElementById('secondaryName').textContent=`${TYPES[secondary].jp}（${secondary}）`;
-  document.getElementById('secondaryDesc').textContent=TYPES[secondary].desc;
-  document.getElementById('scoreGrid').innerHTML=sorted.map(([t,v])=>`<div class="score-item"><div class="sname">${TYPES[t].jp}</div><div class="sval">${v}</div></div>`).join('');
-  document.getElementById('designShare').textContent=TYPES[primary].share;
-  document.getElementById('designDirection').textContent=TYPES[primary].direction;
-  document.getElementById('designAddon').textContent=`副タイプ「${TYPES[secondary].jp}」の観点から：${TYPES[secondary].direction}`;
-  document.getElementById('designRisk').textContent=TYPES[primary].risk;
 }
 
-function restart(){
-  currentQ=0;answers=new Array(18).fill(null);skipped=new Array(18).fill(false);
-  document.getElementById('resultSection').style.display='none';
-  document.getElementById('quizSection').style.display='none';
-  document.getElementById('introSection').style.display='block';
-}
+// Initial display: hide ben23section
+document.getElementById('ben23section').style.display = 'none';
 </script>
 </body>
 </html>
