@@ -1,1 +1,17 @@
-
+{
+  "companyName": "株式会社サンプル商事",
+  "shareCount": "100",
+  "trustMoney": "100,000",
+  "courtName": "名古屋地方裁判所",
+  "trustor": { "address": "名古屋市中区○○町1-2-3", "name": "見本　太郎", "dob": "昭和45年1月1日" },
+  "trustee": { "address": "名古屋市中区○○町4-5-6", "name": "見本　花子", "dob": "昭和48年3月3日" },
+  "successorTrustee": { "address": "名古屋市緑区○○町7-8-9", "name": "見本　次郎", "dob": "平成5年5月5日" },
+  "clearanceTrustee": { "address": "名古屋市中区○○町4-5-6", "name": "見本　花子", "dob": "昭和48年3月3日" },
+  "beneficiaryType": "A",
+  "beneficiary1": { "address": "名古屋市中区○○町1-2-3", "name": "見本　太郎", "dob": "昭和45年1月1日" },
+  "directionType": "A",
+  "triggerDays": "２週間",
+  "reduceDuty": false,
+  "terminationType": "death",
+  "residualType": "A"
+}
