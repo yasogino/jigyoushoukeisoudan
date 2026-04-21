@@ -3,14 +3,14 @@ name: 信託契約書生成
 on:
   push:
     paths:
-      - 'trust/clients/**.json'   # clientsフォルダのJSONが更新されたら起動
+      - 'trust/clients/**.json'
 
 jobs:
   generate:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write   # リポジトリへのコミットに必要
+      contents: write
 
     steps:
       - name: チェックアウト
@@ -27,30 +27,23 @@ jobs:
       - name: 変更されたJSONを検出して契約書を生成
         run: |
           mkdir -p trust/output
-
-          # pushで変更されたJSONファイルを取得
-          CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} \
-            | grep '^trust/clients/.*\.json$' || true)
-
+          CHANGED=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }} 2>/dev/null | grep '^trust/clients/.*\.json$' || git show --name-only --format="" ${{ github.sha }} | grep '^trust/clients/.*\.json$' || true)
           if [ -z "$CHANGED" ]; then
             echo "変更されたJSONファイルなし。スキップします。"
             exit 0
           fi
-
           for JSON_FILE in $CHANGED; do
             echo "処理中: $JSON_FILE"
-            # 出力ファイル名: clients/田中商事.json → output/田中商事.docx
             BASE=$(basename "$JSON_FILE" .json)
             OUT="trust/output/${BASE}.docx"
             node trust/generate_trust_v2.js "$JSON_FILE" "$OUT"
-            echo "✅ 生成: $OUT"
+            echo "生成: $OUT"
           done
 
       - name: 生成したdocxをコミット・プッシュ
         run: |
-          git config user.name  "github-actions[bot]"
+          git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add trust/output/
-          git diff --cached --quiet && echo "変更なし" || \
-            git commit -m "🤖 信託契約書を自動生成 [skip ci]"
+          git diff --cached --quiet && echo "変更なし" || git commit -m "信託契約書を自動生成 [skip ci]"
           git push
