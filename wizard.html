@@ -1,0 +1,1083 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>自社株管理処分信託 契約書作成ウィザード Ver.5.3</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@300;400;600;700&family=Noto+Sans+JP:wght@300;400;500;700&display=swap');
+
+  :root {
+    --ink: #1a1a2e;
+    --ink-light: #4a4a6a;
+    --parchment: #faf8f3;
+    --parchment-dark: #f0ece0;
+    --gold: #b8860b;
+    --gold-light: #d4a017;
+    --gold-pale: #f5ecd0;
+    --red: #8b1a1a;
+    --green: #1a5c2a;
+    --border: #c8bfa0;
+    --shadow: rgba(26,26,46,0.12);
+    --step-active: #1a1a2e;
+    --step-done: #1a5c2a;
+    --step-todo: #c8bfa0;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Noto Sans JP', sans-serif;
+    background: var(--parchment);
+    color: var(--ink);
+    min-height: 100vh;
+    background-image:
+      radial-gradient(ellipse at 20% 10%, rgba(184,134,11,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse at 80% 90%, rgba(26,26,46,0.04) 0%, transparent 60%);
+  }
+
+  /* Header */
+  header {
+    background: var(--ink);
+    color: #f5ecd0;
+    padding: 20px 40px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  header .logo {
+    width: 36px; height: 36px;
+    border: 2px solid var(--gold);
+    border-radius: 4px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Noto Serif JP', serif;
+    font-size: 18px;
+    color: var(--gold);
+    flex-shrink: 0;
+  }
+  header h1 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    line-height: 1.3;
+  }
+  header .subtitle {
+    font-size: 11px;
+    color: #a0998c;
+    margin-top: 2px;
+    letter-spacing: 0.08em;
+  }
+
+  /* Progress bar */
+  .progress-wrap {
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    overflow-x: auto;
+  }
+  .progress-steps {
+    display: flex;
+    min-width: 600px;
+    padding: 16px 0;
+    gap: 0;
+  }
+  .step-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    position: relative;
+    cursor: default;
+  }
+  .step-item::before {
+    content: '';
+    position: absolute;
+    top: 14px;
+    left: calc(50% + 16px);
+    right: calc(-50% + 16px);
+    height: 2px;
+    background: var(--step-todo);
+  }
+  .step-item:last-child::before { display: none; }
+  .step-item.done::before { background: var(--step-done); }
+  .step-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--step-todo);
+    color: white;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    z-index: 1;
+    transition: background 0.3s;
+  }
+  .step-item.active .step-num { background: var(--step-active); }
+  .step-item.done .step-num { background: var(--step-done); font-size: 14px; }
+  .step-label {
+    font-size: 10px;
+    color: var(--ink-light);
+    text-align: center;
+    white-space: nowrap;
+    font-weight: 500;
+  }
+  .step-item.active .step-label { color: var(--ink); font-weight: 700; }
+
+  /* Main */
+  main {
+    max-width: 780px;
+    margin: 32px auto;
+    padding: 0 20px 80px;
+  }
+
+  /* Panels */
+  .panel {
+    display: none;
+    animation: fadeIn 0.3s ease;
+  }
+  .panel.active { display: block; }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .panel-title {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 6px;
+    letter-spacing: 0.03em;
+  }
+  .panel-desc {
+    font-size: 13px;
+    color: var(--ink-light);
+    margin-bottom: 24px;
+    line-height: 1.7;
+    border-left: 3px solid var(--gold);
+    padding-left: 12px;
+  }
+
+  /* Choice cards */
+  .choice-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+    margin-bottom: 24px;
+  }
+  .choice-grid.single { grid-template-columns: 1fr; }
+  .choice-card {
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: white;
+    position: relative;
+  }
+  .choice-card:hover {
+    border-color: var(--gold);
+    background: var(--gold-pale);
+  }
+  .choice-card.selected {
+    border-color: var(--ink);
+    background: var(--gold-pale);
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .choice-card .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 2px 8px;
+    border-radius: 2px;
+    margin-bottom: 8px;
+    background: var(--ink);
+    color: white;
+  }
+  .choice-card.selected .badge { background: var(--gold); }
+  .choice-card h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 6px;
+    color: var(--ink);
+  }
+  .choice-card p {
+    font-size: 12px;
+    color: var(--ink-light);
+    line-height: 1.7;
+  }
+  .choice-card .risk {
+    margin-top: 8px;
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 3px;
+    background: #fff3cd;
+    color: #856404;
+    border-left: 3px solid #ffc107;
+  }
+  .choice-card .check {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: white;
+    display: none;
+    align-items: center; justify-content: center;
+    font-size: 13px;
+  }
+  .choice-card.selected .check { display: flex; }
+
+  /* Form inputs */
+  .form-section {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .form-section h3 {
+    font-family: 'Noto Serif JP', serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 16px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--parchment-dark);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .form-section h3 .tag {
+    font-size: 10px;
+    background: var(--gold-pale);
+    border: 1px solid var(--gold);
+    color: var(--gold);
+    padding: 1px 6px;
+    border-radius: 2px;
+    font-weight: 700;
+  }
+  .form-row {
+    display: grid;
+    grid-template-columns: 130px 1fr;
+    align-items: start;
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  label {
+    font-size: 13px;
+    color: var(--ink-light);
+    padding-top: 8px;
+    font-weight: 500;
+  }
+  input[type="text"] {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    background: var(--parchment);
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  input[type="text"]:focus {
+    border-color: var(--gold);
+    background: white;
+  }
+  input[type="text"]::placeholder { color: #b0a890; font-size: 12px; }
+
+  /* Toggle */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 16px;
+    background: var(--parchment);
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    margin-bottom: 12px;
+    cursor: pointer;
+  }
+  .toggle {
+    width: 44px; height: 24px;
+    background: var(--border);
+    border-radius: 12px;
+    position: relative;
+    transition: background 0.2s;
+    flex-shrink: 0;
+  }
+  .toggle.on { background: var(--green); }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    border-radius: 9px;
+    background: white;
+    top: 3px; left: 3px;
+    transition: left 0.2s;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+  }
+  .toggle.on::after { left: 23px; }
+  .toggle-label { font-size: 13px; color: var(--ink); font-weight: 500; }
+  .toggle-desc { font-size: 11px; color: var(--ink-light); margin-top: 2px; }
+
+  /* Select */
+  select {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'Noto Sans JP', sans-serif;
+    color: var(--ink);
+    background: var(--parchment);
+    outline: none;
+    cursor: pointer;
+  }
+  select:focus { border-color: var(--gold); background: white; }
+
+  /* Buttons */
+  .btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    justify-content: flex-end;
+  }
+  .btn {
+    padding: 12px 28px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-family: 'Noto Sans JP', sans-serif;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    letter-spacing: 0.04em;
+    transition: all 0.15s;
+  }
+  .btn-secondary {
+    background: white;
+    border: 2px solid var(--border);
+    color: var(--ink-light);
+  }
+  .btn-secondary:hover { border-color: var(--ink); color: var(--ink); }
+  .btn-primary {
+    background: var(--ink);
+    color: white;
+    box-shadow: 0 2px 8px var(--shadow);
+  }
+  .btn-primary:hover { background: #2a2a4e; transform: translateY(-1px); }
+  .btn-gold {
+    background: var(--gold);
+    color: white;
+    box-shadow: 0 2px 8px rgba(184,134,11,0.3);
+  }
+  .btn-gold:hover { background: var(--gold-light); transform: translateY(-1px); }
+
+  /* Summary */
+  .summary-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+  }
+  .summary-card {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 14px 16px;
+  }
+  .summary-card .key {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    color: var(--ink-light);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .summary-card .val {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    font-family: 'Noto Serif JP', serif;
+  }
+
+  /* JSON output */
+  .json-box {
+    display: none;
+    background: var(--ink);
+    color: #a8d8a8;
+    border-radius: 6px;
+    padding: 16px;
+    font-size: 11px;
+    font-family: 'Courier New', monospace;
+    white-space: pre;
+    overflow-x: auto;
+    max-height: 300px;
+    overflow-y: auto;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .instruction-box {
+    background: #e8f4e8;
+    border: 1px solid #4caf50;
+    border-radius: 6px;
+    padding: 16px 20px;
+    margin-bottom: 16px;
+  }
+  .instruction-box h4 {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--green);
+    margin-bottom: 8px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .instruction-box ol {
+    font-size: 12px;
+    color: var(--ink);
+    line-height: 2;
+    padding-left: 20px;
+  }
+
+  .copy-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--gold);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    letter-spacing: 0.04em;
+    transition: all 0.15s;
+    margin-bottom: 12px;
+  }
+  .copy-btn:hover { background: var(--gold-light); }
+  .copy-btn.copied { background: var(--green); }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .choice-grid { grid-template-columns: 1fr; }
+    .summary-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    header { padding: 14px 20px; }
+    main { padding: 0 12px 60px; }
+  }
+
+  .warning {
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 5px;
+    padding: 12px 16px;
+    font-size: 12px;
+    color: #856404;
+    margin-bottom: 16px;
+    line-height: 1.6;
+  }
+
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">信</div>
+  <div>
+    <h1>自社株管理処分信託　契約書作成ウィザード</h1>
+    <div class="subtitle">株式管理処分信託契約書 Ver.5.3 ベース ／ （株）リーガルマネジメント名南</div>
+  </div>
+</header>
+
+<div class="progress-wrap">
+  <div class="progress-steps" id="progressSteps">
+    <!-- JS で生成 -->
+  </div>
+</div>
+
+<main>
+
+  <!-- Step 0: 基本情報 -->
+  <div class="panel active" id="panel-0">
+    <div class="panel-title">基本情報の入力</div>
+    <div class="panel-desc">対象会社・信託財産・管轄裁判所を入力してください。</div>
+    <div class="form-section">
+      <h3>対象会社・信託財産</h3>
+      <div class="form-row">
+        <label>対象会社名</label>
+        <input type="text" id="companyName" placeholder="株式会社〇〇商事">
+      </div>
+      <div class="form-row">
+        <label>信託株式数</label>
+        <input type="text" id="shareCount" placeholder="1,000（単位：株）">
+      </div>
+      <div class="form-row">
+        <label>信託金銭額</label>
+        <input type="text" id="trustMoney" placeholder="500,000（単位：円）">
+      </div>
+      <div class="form-row">
+        <label>管轄裁判所</label>
+        <input type="text" id="courtName" placeholder="名古屋（地方裁判所）">
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
+  </div>
+
+  <!-- Step 1: 委託者 -->
+  <div class="panel" id="panel-1">
+    <div class="panel-title">委託者の情報</div>
+    <div class="panel-desc">株式を信託する方（通常：現オーナー経営者）の情報を入力してください。</div>
+    <div class="form-section">
+      <h3>委託者 <span class="tag">第4条</span></h3>
+      <div class="form-row"><label>住所</label><input type="text" id="trustor_address" placeholder="愛知県名古屋市…"></div>
+      <div class="form-row"><label>氏名</label><input type="text" id="trustor_name" placeholder="山田　太郎"></div>
+      <div class="form-row"><label>生年月日</label><input type="text" id="trustor_dob" placeholder="昭和40年5月15日"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
+  </div>
+
+  <!-- Step 2: 受託者 -->
+  <div class="panel" id="panel-2">
+    <div class="panel-title">受託者・後継受託者の情報</div>
+    <div class="panel-desc">株式を管理する方（通常：後継者）とその予備を入力してください。</div>
+    <div class="form-section">
+      <h3>受託者 <span class="tag">第4条</span></h3>
+      <div class="form-row"><label>住所</label><input type="text" id="trustee_address" placeholder="愛知県名古屋市…"></div>
+      <div class="form-row"><label>氏名</label><input type="text" id="trustee_name" placeholder="山田　一郎"></div>
+      <div class="form-row"><label>生年月日</label><input type="text" id="trustee_dob" placeholder="昭和65年3月20日"></div>
+    </div>
+    <div class="form-section">
+      <h3>後継受託者 <span class="tag">第8条</span></h3>
+      <div class="form-row"><label>住所</label><input type="text" id="successorTrustee_address" placeholder="愛知県名古屋市…"></div>
+      <div class="form-row"><label>氏名</label><input type="text" id="successorTrustee_name" placeholder="山田　花子"></div>
+      <div class="form-row"><label>生年月日</label><input type="text" id="successorTrustee_dob" placeholder="昭和67年7月10日"></div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
+  </div>
+
+  <!-- Step 3: 受益者 -->
+  <div class="panel" id="panel-3">
+    <div class="panel-title">受益者の選択</div>
+    <div class="panel-desc">信託の利益を受け取る方の設計を選んでください。第11条の選択肢です。</div>
+
+    <div class="choice-grid">
+      <div class="choice-card" id="choice-benA" onclick="selectChoice('beneficiaryType','A','choice-benA','choice-benB');updateBenSections()">
+        <div class="badge">選択肢A</div>
+        <div class="check">✓</div>
+        <h3>シンプル自益型</h3>
+        <p>委託者（現オーナー）が当初受益者。当初受益者の死亡時点で信託終了・残余財産帰属とするシンプルな設計。</p>
+        <div class="risk">受益者連続なし。帰属権利者への補充規定が第24条に必要。</div>
+      </div>
+      <div class="choice-card" id="choice-benB" onclick="selectChoice('beneficiaryType','B','choice-benB','choice-benA');updateBenSections()">
+        <div class="badge">選択肢B</div>
+        <div class="check">✓</div>
+        <h3>受益者連続型（信託法91条）</h3>
+        <p>当初受益者→第２次→第３次と連続して受益権が移転する設計。第11条の2（補充受益者）・30年ルール（第22条第7号）が自動付与されます。</p>
+        <div class="risk">第２次受益者が受託者を兼ねる場合は例外型（2名）を選択。</div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>第１次受益者（当初受益者） <span class="tag">第11条</span></h3>
+      <div class="form-row"><label>住所</label><input type="text" id="ben1_address" placeholder="愛知県名古屋市…"></div>
+      <div class="form-row"><label>氏名</label><input type="text" id="ben1_name" placeholder="山田　太郎"></div>
+      <div class="form-row"><label>生年月日</label><input type="text" id="ben1_dob" placeholder="昭和40年5月15日"></div>
+    </div>
+
+    <div id="ben23section" style="display:none;">
+      <div class="form-section" style="background:var(--parchment-dark);border-radius:8px;padding:16px;margin-bottom:16px;">
+        <h3 style="margin-bottom:12px;">第２次受益者の形式 <span class="tag">第11条B</span></h3>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;">
+          <div class="choice-card" id="choice-ben2single" onclick="selectBen2Type('single')" style="padding:12px;">
+            <div class="badge" style="font-size:10px;">原則型</div>
+            <div class="check">✓</div>
+            <h3 style="font-size:13px;">１名</h3>
+            <p style="font-size:11px;">通常の受益者連続型。</p>
+          </div>
+          <div class="choice-card" id="choice-ben2dual" onclick="selectBen2Type('dual')" style="padding:12px;">
+            <div class="badge" style="font-size:10px;">例外型</div>
+            <div class="check">✓</div>
+            <h3 style="font-size:13px;">２名（受託者兼務対策）</h3>
+            <p style="font-size:11px;">第２次受益者が受託者を兼ねる場合に選択。信託終了リスクを回避。</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section" id="ben2singleSection">
+        <h3>第２次受益者 <span class="tag">原則型</span></h3>
+        <div class="form-row"><label>住所</label><input type="text" id="ben2_address" placeholder="愛知県名古屋市…"></div>
+        <div class="form-row"><label>氏名</label><input type="text" id="ben2_name" placeholder="山田　幸子（配偶者）"></div>
+        <div class="form-row"><label>生年月日</label><input type="text" id="ben2_dob" placeholder="昭和42年8月25日"></div>
+      </div>
+
+      <div class="form-section" id="ben2dualSection" style="display:none;">
+        <h3>第２次受益者甲（受託者を兼ねる者） <span class="tag">例外型</span></h3>
+        <div class="form-row"><label>住所</label><input type="text" id="ben2a_address" placeholder="後継受託者の住所と同一"></div>
+        <div class="form-row"><label>氏名</label><input type="text" id="ben2a_name" placeholder="山田　一郎（後継者・受託者と同一）"></div>
+        <div class="form-row"><label>生年月日</label><input type="text" id="ben2a_dob" placeholder="昭和65年3月20日"></div>
+        <h3 style="margin-top:16px;">第２次受益者乙（第３次受益者を兼ねる者） <span class="tag">例外型</span></h3>
+        <div class="form-row"><label>住所</label><input type="text" id="ben2b_address" placeholder="愛知県名古屋市…"></div>
+        <div class="form-row"><label>氏名</label><input type="text" id="ben2b_name" placeholder="山田　花子"></div>
+        <div class="form-row"><label>生年月日</label><input type="text" id="ben2b_dob" placeholder="昭和67年7月10日"></div>
+      </div>
+
+      <div class="form-section">
+        <h3>第３次受益者 <span class="tag">受益者連続型のみ</span></h3>
+        <div class="form-row"><label>住所</label><input type="text" id="ben3_address" placeholder="愛知県名古屋市…"></div>
+        <div class="form-row"><label>氏名</label><input type="text" id="ben3_name" placeholder="山田　一郎（後継者）"></div>
+        <div class="form-row"><label>生年月日</label><input type="text" id="ben3_dob" placeholder="昭和65年3月20日"></div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
+  </div>
+
+  <!-- Step 4: 指図権 -->
+  <div class="panel" id="panel-4">
+    <div class="panel-title">指図権の設計</div>
+    <div class="panel-desc">最重要設計項目です。議決権行使・株式処分の権限をどのように設計するか選んでください。第14条の選択肢です。</div>
+
+    <div class="choice-grid">
+      <div class="choice-card" id="choice-dirA" onclick="selectChoice('directionType','A','choice-dirA','choice-dirB')">
+        <div class="badge">選択肢A　推奨</div>
+        <div class="check">✓</div>
+        <h3>指図型</h3>
+        <p>元気なうちは受益者（現経営者）が指図権を持つ。認知症等のトリガー発生後に受託者へ権限が移行する標準型。</p>
+        <div class="risk">トリガー条件の設計が重要。不応答トリガーの期間を慎重に検討すること。</div>
+      </div>
+      <div class="choice-card" id="choice-dirB" onclick="selectChoice('directionType','B','choice-dirB','choice-dirA')">
+        <div class="badge">選択肢B</div>
+        <div class="check">✓</div>
+        <h3>自律型</h3>
+        <p>受益者の指図なしに受託者が最初から自律的に権限を行使する設計。委託者が受託者を全面的に信頼する場合に選択。</p>
+        <div class="risk">名義信託との区別に注意。委託者・受益者への十分な説明と記録が必要。</div>
+      </div>
+    </div>
+
+    <div class="form-section" id="triggerSection">
+      <h3>トリガー条件（指図型の場合）</h3>
+      <div class="form-row">
+        <label>不応答期間</label>
+        <select id="triggerDays">
+          <option value="２週間">２週間（推奨：不応答リスク低減）</option>
+          <option value="１か月">１か月（ひな形デフォルト）</option>
+          <option value="２か月">２か月</option>
+        </select>
+      </div>
+      <p style="font-size:11px;color:var(--ink-light);margin-top:8px;line-height:1.7;">
+        受託者から受益者への指図要請通知（内容証明郵便）後、この期間内に受益者が指図しない場合に受託者の自律判断へ切り替わります。期間が長いほど経営判断の遅延リスクが高まります。
+      </p>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
+  </div>
+
+  <!-- Step 5: 善管注意義務・残余財産 -->
+  <div class="panel" id="panel-5">
+    <div class="panel-title">善管注意義務・残余財産の設計</div>
+    <div class="panel-desc">第15条（善管注意義務）と第24条（残余財産帰属）を設計してください。</div>
+
+    <!-- 善管注意義務 -->
+    <div class="form-section">
+      <h3>善管注意義務の軽減 <span class="tag">第15条</span></h3>
+      <div class="toggle-row" onclick="toggleOpt('reduceDuty')">
+        <div class="toggle" id="toggle-reduceDuty"></div>
+        <div>
+          <div class="toggle-label">軽減条項を追加する（自己のためにするのと同一の注意）</div>
+          <div class="toggle-desc">信託法29条2項但書。受益者が承諾した場合のみ有効。紛争時の判断基準が曖昧になるリスクあり。</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 残余財産 -->
+    <div class="form-section">
+      <h3>残余財産の帰属先 <span class="tag">第24条</span></h3>
+      <div class="choice-grid" style="margin-bottom:16px;">
+        <div class="choice-card" id="choice-resA" onclick="selectChoice('residualType','A','choice-resA','choice-resB');toggleResidualForm()">
+          <div class="badge">選択肢A　課税リスク低</div>
+          <div class="check">✓</div>
+          <h3>信託終了時の受益者に帰属</h3>
+          <p>最もシンプル。自益信託の場合、信託設定・終了時ともに実質的な課税が生じにくい。</p>
+        </div>
+        <div class="choice-card" id="choice-resB" onclick="selectChoice('residualType','B','choice-resB','choice-resA');toggleResidualForm()">
+          <div class="badge">選択肢B</div>
+          <div class="check">✓</div>
+          <h3>特定の帰属権利者を指定</h3>
+          <p>後継者等を名指しで指定。信託終了時にみなし贈与課税（相続税法9条の2第4項）が生じうる。税理士連携必須。</p>
+        </div>
+      </div>
+
+      <div id="residualForm" class="hidden">
+        <div class="form-section" style="margin-bottom:12px;">
+          <h3>帰属権利者 <span class="tag">第24条B</span></h3>
+          <div class="form-row"><label>住所</label><input type="text" id="res_address" placeholder="愛知県名古屋市…"></div>
+          <div class="form-row"><label>氏名</label><input type="text" id="res_name" placeholder="山田　一郎（後継者）"></div>
+          <div class="form-row"><label>生年月日</label><input type="text" id="res_dob" placeholder="昭和65年3月20日"></div>
+        </div>
+        <div class="form-section">
+          <h3>予備的帰属権利者 <span class="tag">第24条B</span></h3>
+          <div class="form-row"><label>住所</label><input type="text" id="resAlt_address" placeholder="愛知県名古屋市…"></div>
+          <div class="form-row"><label>氏名</label><input type="text" id="resAlt_name" placeholder="山田　花子"></div>
+          <div class="form-row"><label>生年月日</label><input type="text" id="resAlt_dob" placeholder="昭和67年7月10日"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
+  </div>
+
+  <!-- Step 6: 信託終了事由・清算受託者 -->
+  <div class="panel" id="panel-6">
+    <div class="panel-title">信託終了事由・清算受託者</div>
+    <div class="panel-desc">第22条（終了事由）の第７号と予備的清算受託者を設定してください。</div>
+
+    <div class="form-section">
+      <h3>終了事由（７号）の設計 <span class="tag">第22条</span></h3>
+      <p style="font-size:11px;color:var(--ink-light);margin-bottom:12px;line-height:1.7;">受益者型の選択と連動します。受益者連続型（B）の場合は「真正連続型」を選択してください。</p>
+      <div class="choice-grid" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="choice-card" id="choice-terDeath" onclick="selectTer('death')">
+          <div class="badge">①純粋シンプル型</div>
+          <div class="check">✓</div>
+          <h3>当初受益者の死亡時に終了</h3>
+          <p>シンプル型（A）の標準。死亡と同時に信託終了・残余財産帰属手続きへ。</p>
+        </div>
+        <div class="choice-card" id="choice-terInherit" onclick="selectTer('inheritance')">
+          <div class="badge">②疑似連続型</div>
+          <div class="check">✓</div>
+          <h3>遺産分割成立時に終了</h3>
+          <p>受益権を相続させ遺産分割対象とする技術。遺産分割未了リスクに注意。</p>
+        </div>
+        <div class="choice-card" id="choice-terContinue" onclick="selectTer('continue')">
+          <div class="badge">③真正連続型</div>
+          <div class="check">✓</div>
+          <h3>30年ルール満了時に終了</h3>
+          <p>受益者連続型（B）専用。信託法91条の30年経過後に受益者死亡で終了。</p>
+          <div class="risk">受益者連続型（B）を選択した場合はこちらを選択。</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <h3>予備的清算受託者 <span class="tag">第23条</span></h3>
+      <p style="font-size:12px;color:var(--ink-light);margin-bottom:14px;">受託者が欠缺して終了した場合の清算受託者。後継受託者と同一人でも可。</p>
+      <div class="form-row"><label>住所</label><input type="text" id="clearance_address" placeholder="愛知県名古屋市…"></div>
+      <div class="form-row"><label>氏名</label><input type="text" id="clearance_name" placeholder="山田　花子"></div>
+      <div class="form-row"><label>生年月日</label><input type="text" id="clearance_dob" placeholder="昭和67年7月10日"></div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-primary" onclick="goNext()">次へ →</button>
+    </div>
+  </div>
+
+  <!-- Step 7: 確認・出力 -->
+  <div class="panel" id="panel-7">
+    <div class="panel-title">入力内容の確認と出力</div>
+    <div class="panel-desc">設計内容を確認してください。JSONをコピーして、Claudeに「このJSONで契約書を生成してください」と依頼すると Word(.docx) が生成されます。</div>
+
+    <div class="summary-grid" id="summaryGrid"></div>
+
+    <div class="instruction-box">
+      <h4>📋 docxファイルの取得方法</h4>
+      <ol>
+        <li>下の「JSONをコピー」ボタンをクリック</li>
+        <li>Claudeのチャット画面を開く</li>
+        <li>「このJSONで自社株信託契約書を生成してください」と入力し、JSONをペーストして送信</li>
+        <li>Word（.docx）ファイルがダウンロードできます</li>
+      </ol>
+    </div>
+
+    <button class="copy-btn" id="copyBtn" onclick="copyJSON()">
+      📋 JSONをコピー
+    </button>
+
+    <div class="json-box" id="jsonOutput"></div>
+
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="goPrev()">← 戻る</button>
+      <button class="btn btn-gold" onclick="copyJSON()">📋 JSONをコピーして依頼する</button>
+    </div>
+  </div>
+
+</main>
+
+
+// ===== State =====
+let currentStep = 0;
+const TOTAL_STEPS = 8;
+const STEP_LABELS = ['基本情報', '委託者', '受託者', '受益者', '指図権', '義務・残余', '終了・清算', '確認・出力'];
+
+const state = {
+  beneficiaryType: null,
+  ben2Type: 'single',
+  directionType: null,
+  reduceDuty: false,
+  residualType: null,
+  terminationType: null,
+  triggerDays: '２週間',
+};
+
+// ===== Init =====
+function buildProgress() {
+  const wrap = document.getElementById('progressSteps');
+  wrap.innerHTML = STEP_LABELS.map((label, i) => `
+    <div class="step-item ${i < currentStep ? 'done' : i === currentStep ? 'active' : ''}" id="prog-${i}">
+      <div class="step-num">${i < currentStep ? '✓' : i + 1}</div>
+      <div class="step-label">${label}</div>
+    </div>
+  `).join('');
+}
+
+buildProgress();
+
+// ===== Navigation =====
+function goNext() {
+  document.getElementById(`panel-${currentStep}`).classList.remove('active');
+  currentStep++;
+  document.getElementById(`panel-${currentStep}`).classList.add('active');
+  buildProgress();
+  if (currentStep === 7) buildSummary();
+  window.scrollTo(0, 0);
+}
+
+function goPrev() {
+  document.getElementById(`panel-${currentStep}`).classList.remove('active');
+  currentStep--;
+  document.getElementById(`panel-${currentStep}`).classList.add('active');
+  buildProgress();
+  window.scrollTo(0, 0);
+}
+
+// ===== Choice selection =====
+function selectChoice(key, value, activeId, inactiveId) {
+  state[key] = value;
+  document.getElementById(activeId)?.classList.add('selected');
+  document.getElementById(inactiveId)?.classList.remove('selected');
+
+  // 受益者連続型の場合のみ2-3次受益者フォームを表示（updateBenSectionsで処理）
+  if (key === 'beneficiaryType') {
+    // updateBenSections() が呼ばれる
+  }
+  // 指図型の場合のみトリガー設定表示
+  if (key === 'directionType') {
+    document.getElementById('triggerSection').style.display = value === 'A' ? 'block' : 'none';
+  }
+}
+
+// ===== Ben section update =====
+function updateBenSections() {
+  const isB = state.beneficiaryType === 'B';
+  document.getElementById('ben23section').style.display = isB ? 'block' : 'none';
+}
+
+// ===== Ben2 type selection =====
+function selectBen2Type(type) {
+  state.ben2Type = type;
+  document.getElementById('choice-ben2single').classList.toggle('selected', type === 'single');
+  document.getElementById('choice-ben2dual').classList.toggle('selected', type === 'dual');
+  document.getElementById('ben2singleSection').style.display = type === 'single' ? 'block' : 'none';
+  document.getElementById('ben2dualSection').style.display = type === 'dual' ? 'block' : 'none';
+}
+
+// ===== Termination type selection =====
+function selectTer(type) {
+  state.terminationType = type;
+  ['Death','Inherit','Continue'].forEach(t => {
+    document.getElementById('choice-ter' + t).classList.remove('selected');
+  });
+  const map = { death: 'Death', inheritance: 'Inherit', continue: 'Continue' };
+  document.getElementById('choice-ter' + map[type]).classList.add('selected');
+}
+
+// ===== Toggle =====
+function toggleOpt(key) {
+  state[key] = !state[key];
+  const el = document.getElementById(`toggle-${key}`);
+  el.classList.toggle('on', state[key]);
+}
+
+// ===== Residual form =====
+function toggleResidualForm() {
+  const show = state.residualType === 'B';
+  document.getElementById('residualForm').classList.toggle('hidden', !show);
+}
+
+// ===== Get input value =====
+function val(id) {
+  return document.getElementById(id)?.value?.trim() || '';
+}
+
+// ===== Build config JSON =====
+function buildConfig() {
+  return {
+    companyName: val('companyName') || '［対象会社名］',
+    shareCount: val('shareCount') || '［株数］',
+    trustMoney: val('trustMoney') || '［金額］',
+    courtName: val('courtName') || '［管轄地方裁判所名］',
+    trustor: {
+      address: val('trustor_address'),
+      name: val('trustor_name'),
+      dob: val('trustor_dob'),
+    },
+    trustee: {
+      address: val('trustee_address'),
+      name: val('trustee_name'),
+      dob: val('trustee_dob'),
+    },
+    successorTrustee: {
+      address: val('successorTrustee_address'),
+      name: val('successorTrustee_name'),
+      dob: val('successorTrustee_dob'),
+    },
+    clearanceTrustee: {
+      address: val('clearance_address'),
+      name: val('clearance_name'),
+      dob: val('clearance_dob'),
+    },
+    beneficiaryType: state.beneficiaryType || 'A',
+    beneficiary1: {
+      address: val('ben1_address'),
+      name: val('ben1_name'),
+      dob: val('ben1_dob'),
+    },
+    beneficiary2: state.beneficiaryType === 'B' ? {
+      address: val('ben2_address'),
+      name: val('ben2_name'),
+      dob: val('ben2_dob'),
+    } : undefined,
+    beneficiary3: state.beneficiaryType === 'B' ? {
+      address: val('ben3_address'),
+      name: val('ben3_name'),
+      dob: val('ben3_dob'),
+    } : undefined,
+    directionType: state.directionType || 'A',
+    triggerDays: document.getElementById('triggerDays')?.value || '２週間',
+    reduceDuty: state.reduceDuty,
+    terminationType: state.terminationType || 'death',
+    residualType: state.residualType || 'A',
+    residualPerson: state.residualType === 'B' ? {
+      address: val('res_address'),
+      name: val('res_name'),
+      dob: val('res_dob'),
+    } : undefined,
+    residualPersonAlt: state.residualType === 'B' ? {
+      address: val('resAlt_address'),
+      name: val('resAlt_name'),
+      dob: val('resAlt_dob'),
+    } : undefined,
+  };
+}
+
+// ===== Summary =====
+function buildSummary() {
+  const cfg = buildConfig();
+  const grid = document.getElementById('summaryGrid');
+  const items = [
+    ['対象会社', cfg.companyName],
+    ['信託株式数', cfg.shareCount + ' 株'],
+    ['委託者', cfg.trustor.name || '（未入力）'],
+    ['受託者', cfg.trustee.name || '（未入力）'],
+    ['受益者設計', cfg.beneficiaryType === 'A' ? 'A：シンプル自益型' : 'B：受益者連続型'],
+    ['指図権設計', cfg.directionType === 'A' ? 'A：指図型（推奨）' : 'B：自律型'],
+    ['善管注意義務', cfg.reduceDuty ? '軽減条項あり' : '標準（善管注意義務）'],
+    ['残余財産帰属', cfg.residualType === 'A' ? 'A：終了時受益者' : 'B：特定帰属権利者'],
+    ['終了事由（7号）', cfg.terminationType === 'death' ? '当初受益者死亡時' : '遺産分割成立時'],
+    ['管轄裁判所', cfg.courtName + ' 地方裁判所'],
+  ];
+  grid.innerHTML = items.map(([k, v]) => `
+    <div class="summary-card">
+      <div class="key">${k}</div>
+      <div class="val">${v}</div>
+    </div>
+  `).join('');
+
+  const jsonStr = JSON.stringify(cfg, null, 2);
+  document.getElementById('jsonOutput').textContent = jsonStr;
+}
+
+// ===== Copy JSON =====
+function copyJSON() {
+  const cfg = buildConfig();
+  const jsonStr = JSON.stringify(cfg, null, 2);
+  const prompt = `以下のJSONデータを使って、自社株管理処分信託契約書（Ver.5.3ベース）のWordファイル（.docx）を生成してください。
+
+【生成仕様】
+・Node.js の docx ライブラリを使用してください。
+・フォントはMS明朝、本文サイズ20（10pt相当）で統一してください。
+・条文番号は漢数字（第１条、第２条…）で記載してください。
+・脚注（footnotes）を各条文に付与してください。
+・前文として「本契約は、株式の管理・処分を通じた経営の安定と事業承継の実現を経済的目的とする信託（承継安定型）である。」を第１条の前に付記してください。
+
+【条文構成（第１条〜第２７条）】
+第１条 信託の設定、第２条 信託の目的（冒頭に承継安定型を明記・優先順位(1)(2)(3)の順）、第３条 信託財産（信託財産目録・第3項で配当等の当然帰属を明記）、第４条 委託者及び受託者、第５条 受託者の報酬（無報酬）、第６条 受託者の辞任（信託法57条1項の適用排除）、第７条 受託者の解任（信託法58条1項の適用排除）、第８条 受託者の任務終了事由及び後継受託者（任務終了事由4号＋その他・第3項に就任後任務終了の連鎖規定）、第９条 委託者の地位の不承継、第１０条 受益権、第１１条 受益者、第１１条の２ 補充受益者（連続型Bのみ）、第１２条 受益者の連続性、第１３条 受益権の処分等の制限、第１４条 管理・運用・処分に必要な事項、第１５条 善管注意義務及び分別管理、第１６条 信託給付の内容、第１７条 帳簿など、第１８条 信託財産の追加、第１９条 事務処理代行者、第２０条 受益権証書不発行、第２１条 信託期間、第２２条 信託終了事由（全10号・信託法164条1項の適用除外を冒頭に明記）、第２３条 清算受託者、第２４条 残余財産の帰属権利者及び帰属方法等（端数処理第4項付加）、第２５条 信託の変更の制限、第２６条 準拠法及び裁判管轄、第２７条 契約に定めのない事項
+
+【受益者設計（beneficiaryType）】
+・A：委託者＝当初受益者。受益者連続なし。第11条の2は不要。
+・B：受益者連続型（信託法91条）。ben2Type=singleなら原則型1名、ben2Type=dualなら例外型2名（甲・乙・受益権割合付き）。第11条の2（補充受益者・3段階補充連鎖・同時死亡擬制・第4項）を必ず付与。
+
+【第14条（指図権）の仕様】
+・directionType=A（指図型）：第2項トリガー（１）後見等審判（２）医師診断書（３）内容証明通知後triggerDays以内の不応答（４）当初受益者死亡（連続型Bのみ）。第2項冒頭に「正当な理由なく〇か月不応答」の文言を入れないこと。
+・directionType=B（自律型）：受託者が最初から自律的に行使。
+
+【第15条（善管注意義務）の仕様】
+・第1項（１）：「信託株式については、必要な信託表示の登録をする。」と正確に記載（独立した登記条項を創設しない）。
+・reduceDuty=true：第1項末尾にただし書を追記（信託法29条2項但書）。
+
+【第22条（信託終了事由）の仕様】
+・第1項冒頭：信託法164条1項の適用除外を明記。
+・第7号：terminationType=deathはシンプル型、terminationType=inheritanceは遺産分割型、terminationType=continueは30年ルール満了型。
+
+【第24条（残余財産）の仕様】
+・residualType=A：終了時の受益者に帰属（一行）。
+・residualType=B：帰属権利者指定＋予備的帰属権利者（先死亡・同時死亡規定）を明記。
+
+\`\`\`json
+${jsonStr}
+\`\`\`
+
+上記仕様に従い、Node.jsスクリプトを作成して実行し、.docxファイルを出力してください。`;
+  navigator.clipboard.writeText(prompt).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.textContent = '✅ コピーしました！';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = '📋 JSONをコピー';
+      btn.classList.remove('copied');
+    }, 2500);
+  }).catch(() => {
+    alert('コピーに失敗しました。JSONボックスを手動で選択してコピーしてください。');
+  });
+}
+
+// Initial display: hide ben23section
+document.getElementById('ben23section').style.display = 'none';
+
+</script>
+</body>
+</html>
